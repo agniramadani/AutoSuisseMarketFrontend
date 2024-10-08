@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import './App.css'
+import Navbar from './components/Navbar'
+import SearchForm from './components/SearchForm'
 
 function App() {
   
   return (
     <>
-      <h2 style={{textAlign: 'center'}}>
-        Welcome to AutoSuisseMarket
-      </h2>
+      {Navbar()}
+      {SearchForm()}
     </>
   )
 }

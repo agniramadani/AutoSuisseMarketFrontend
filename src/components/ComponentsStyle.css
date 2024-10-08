@@ -1,0 +1,19 @@
+.search-form {
+    background-color: #C7253E;
+    width: 70%;
+    margin: 100px auto 0;
+    padding: 20px;
+    color: #000;
+    text-align: center;
+  }
+  
+  @media (max-width: 1024px) {
+    .search-form {
+      width: 100%;
+      margin-top: 20px;
+    }
+}
+
+.dropdown {
+  width: 100%;
+}
