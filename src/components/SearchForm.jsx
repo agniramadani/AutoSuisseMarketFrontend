@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API_BASE_URL } from "../apiConfig.jsx";
+import { useNavigate } from 'react-router-dom';
+import Navbar from "./Navbar.jsx"
 import './ComponentsStyle.css';
 import axios from 'axios';
 
-function SearchForm() {
-    const [selectedMake, setSelectedMake] = useState('');
-    const [selectedModel, setSelectedModel] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [selectedPrice, setSelectedPrice] = useState('');
+const SearchForm = () =>  {
+    const [selectedMake, setSelectedMake] = useState(null);
+    const [selectedModel, setSelectedModel] = useState(null);
+    const [selectedYear, setSelectedYear] = useState(null);
+    const [selectedPrice, setSelectedPrice] = useState(null);
     const [makes, setMakes] = useState([]);
     const [models, setModels] = useState([]); 
 
+    const navigate = useNavigate();
+    
     // Generate years from 2004 to 2024
     const years = useMemo(() => Array.from({ length: 21 }, (_, i) => `${2024 - i}`), []);
 
@@ -72,23 +76,44 @@ function SearchForm() {
         </div>
     );   
 
+    const handleSearch = () => {
+        const queryParams = new URLSearchParams();
+        // Query will include only non-null parameters from selected values
+        if (selectedMake) queryParams.append('make', selectedMake);
+        if (selectedModel) queryParams.append('model', selectedModel);
+        if (selectedYear) queryParams.append('year', selectedYear);
+        if (selectedPrice) queryParams.append('price', selectedPrice);
+    
+        navigate(`/search?${queryParams.toString()}`);
+    };
+
     return (
-        <div className="search-form container">
-            <div className="row">
-                {renderDropdown(selectedMake || 'MARKE', makes.map(make => make.make), setSelectedMake)}
-                {renderDropdown(
-                    selectedModel || 'MODELL', 
-                    models.map(model => model.model),
-                    setSelectedModel,
-                    !selectedMake // Disable if no make is selected
-                )}
-                {renderDropdown(selectedYear ? `AB ${selectedYear}` : 'JAHR', years, setSelectedYear)}
-                {renderDropdown(selectedPrice ? `AB ${selectedPrice}` : 'PREIS', prices, setSelectedPrice)}
+        <>
+            {Navbar()}
+            <div className="search-form container">
+                <div className="row">
+                    {renderDropdown(selectedMake || 'MARKE', makes.map(make => make.make), setSelectedMake)}
+                    {renderDropdown(
+                        selectedModel || 'MODELL', 
+                        models.map(model => model.model),
+                        setSelectedModel,
+                        !selectedMake // Disable if no make is selected
+                    )}
+                    {renderDropdown(selectedYear ? `AB ${selectedYear}` : 'JAHR', years, setSelectedYear)}
+                    {renderDropdown(selectedPrice ? `AB ${selectedPrice}` : 'PREIS', prices, setSelectedPrice)}
+                </div>
+                <div>
+                    <button
+                        style={{ width: '100%' }}
+                        type="button"
+                        className="btn btn-outline-light"
+                        onClick={handleSearch}
+                    >
+                        SUCHE
+                    </button>
+                </div>
             </div>
-            <div>
-                <button style={{ width: '100%' }} type="button" className="btn btn-outline-light">SUCHE</button>
-            </div>
-        </div>
+        </>
     );
 }
 
