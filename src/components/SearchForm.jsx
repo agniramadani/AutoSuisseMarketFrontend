@@ -19,7 +19,7 @@ const SearchForm = () =>  {
     const years = useMemo(() => Array.from({ length: 21 }, (_, i) => `${2024 - i}`), []);
 
     // Generate prices from 1k to 200k by 10k
-    const prices = useMemo(() => Array.from({ length: 20 }, (_, i) => `${(i + 1) * 10000} CHF`), []);
+    const prices = useMemo(() => Array.from({ length: 20 }, (_, i) => `${(i + 1) * 10000}`), []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,7 +100,7 @@ const SearchForm = () =>  {
                         !selectedMake // Disable if no make is selected
                     )}
                     {renderDropdown(selectedYear ? `AB ${selectedYear}` : 'JAHR', years, setSelectedYear)}
-                    {renderDropdown(selectedPrice ? `AB ${selectedPrice}` : 'PREIS', prices, setSelectedPrice)}
+                    {renderDropdown(selectedPrice ? `AB ${selectedPrice} CH` : 'PREIS', prices, setSelectedPrice)}
                 </div>
                 <div>
                     <button
